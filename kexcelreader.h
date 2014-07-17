@@ -2,8 +2,9 @@
 #define KEXCELREADER_H
 
 #include <QObject>
-#include <QAxObject>
+#include <QVariantList>
 
+class QAxObject;
 class KExcelReader : public QObject
 {
     Q_OBJECT
@@ -13,11 +14,14 @@ public:
     ~KExcelReader();
 
 public:
+    static bool isExcelApplicationAvailable();
+
+public:
     bool open(const QString& xlsFile);
-    int sheetCount();
-    int rowCount(QAxObject* sheet);
-    int columnCount(QAxObject* sheet);
-    QList<QVariantList> values(int sheetNumber=1);
+    int sheetCount() const;
+    int rowCount(QAxObject* sheet) const;
+    int columnCount(QAxObject* sheet) const;
+    QList<QVariantList> values(const int colsCount, const int rowsCount= - 1, const int sheetNumber = 1) const;
 
 private:
     void init();

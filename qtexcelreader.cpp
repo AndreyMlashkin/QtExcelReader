@@ -1,17 +1,27 @@
 #include <QDebug>
+#include <QMessageBox>
 #include <QVariant>
+#include <QStandardItemModel>
 
 #include "qtexcelreader.h"
+#include "ui_qtexcelreader.h"
 
 #include "kexcelreader.h"
 
+const int rowCount = 10;
+const int columnCount = 5;
+
 
 QtExcelReader::QtExcelReader(QWidget *parent, Qt::WindowFlags flags)
-    : QMainWindow(parent, flags)
+    : QMainWindow(parent, flags),
+      m_model(new QStandardItemModel)
 {
-    ui.setupUi(this);
+    m_ui.setupUi(this);
+    m_model->insertColumns(0, columnCount);
+    m_model->insertRows(0, rowCount);
+    m_ui.table->setModel(m_model);
 
-    connect(ui.runExcel, SIGNAL(clicked()), SLOT(slotExcelTest()));
+    connect(m_ui.runExcel, SIGNAL(clicked()), SLOT(showTable()));
 }
 
 QtExcelReader::~QtExcelReader()
@@ -19,31 +29,37 @@ QtExcelReader::~QtExcelReader()
 
 }
 
-void QtExcelReader::slotExcelTest()
+void QtExcelReader::showTable()
 {
     KExcelReader excelReader;
 
     QList<QVariantList> data;
-    if (excelReader.open("C:\\1.xlsx"))
+    QString path = m_ui.path->text();
+
+    bool isOpen = (excelReader.open(path));
+    if(!isOpen)
     {
-        data = excelReader.values();
+        QMessageBox* b = new QMessageBox(this);
+        b->setText("Документ не найден.");
+        b->exec();
+        return;
     }
 
+    data = excelReader.values(columnCount, rowCount);
+    int i = 0;
     foreach(QVariantList row, data)
     {
+        int j = 0;
+        QString str;
         foreach(QVariant v, row)
         {
-            bool isOk = false;
-            int value = v.toInt(&isOk);
-            if(isOk)
-                qDebug() << value;
-
-            isOk = false;
             QString sValue = v.toString();
-            if(!isOk)
-                qDebug() << sValue;
-        }
+            m_model->setData(m_model->index(i, j), sValue);
 
-//        int cn = data.count();
+            str += sValue + " ";
+            ++j;
+        }
+        qDebug() << str;
+        ++i;
     }
 }

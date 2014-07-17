@@ -1,8 +1,9 @@
 #ifndef QTEXCELREADER_H
 #define QTEXCELREADER_H
 
-//#include <QtGui/QMainWindow>
 #include "ui_qtexcelreader.h"
+
+class QStandardItemModel;
 
 class QtExcelReader : public QMainWindow
 {
@@ -13,10 +14,11 @@ public:
     ~QtExcelReader();
 
 protected slots:
-    void slotExcelTest();
+    void showTable();
 
 private:
-    Ui::QtExcelReaderClass ui;
+    Ui::QtExcelReaderClass m_ui;
+    QStandardItemModel* m_model;
 };
 
 #endif // QTEXCELREADER_H
