@@ -1,7 +1,7 @@
 #ifndef QTEXCELREADER_H
 #define QTEXCELREADER_H
 
-#include <QtGui/QMainWindow>
+//#include <QtGui/QMainWindow>
 #include "ui_qtexcelreader.h"
 
 class QtExcelReader : public QMainWindow
@@ -9,7 +9,7 @@ class QtExcelReader : public QMainWindow
     Q_OBJECT
 
 public:
-    QtExcelReader(QWidget *parent = 0, Qt::WFlags flags = 0);
+    QtExcelReader(QWidget *parent = 0, Qt::WindowFlags flags = 0);
     ~QtExcelReader();
 
 protected slots:

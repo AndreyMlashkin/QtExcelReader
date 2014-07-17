@@ -1,5 +1,5 @@
 #include "qtexcelreader.h"
-#include <QtGui/QApplication>
+//#include <QtGui/QApplication>
 
 int main(int argc, char *argv[])
 {
